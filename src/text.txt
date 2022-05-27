@@ -1,0 +1,30 @@
+In this section we present the design of an FSM that is slightly more complex than the
+previous examples. The purpose of the machine is to control access by various devices
+to a shared resource in a given system. Only one device can use the resource at a time.
+Assume that all signals in the system can change values only following the positive edge of
+the clock signal. Each device provides one input to the FSM, called a request, and the FSM
+produces a separate output for each device, called a grant. Adevice indicates its need to use
+the resource by asserting its request signal. Whenever the shared resource is not already in
+use, the FSM considers all requests that are active. Based on a priority scheme, it selects
+one of the requesting devices and asserts its grant signal. When the device is finished using
+the resource, it deasserts its request signal. We will assume that there are three devices in the system, called device 1, device 2,
+and device 3. It is easy to see how the FSM can be extended to handle more devices. The
+request signals are named r1, r2, and r3, and the grant signals are called g1, g2, and g3. The
+devices are assigned a priority level such that device 1 has the highest priority, device 2 has
+the next highest, and device 3 has the lowest priority. Thus if more than one request signal
+is asserted when the FSM assigns a grant, the grant is given to the requesting device that
+has the highest priority.
+A state diagram for the desired FSM, designed as a Moore-type machine, is depicted
+in Figure 6.72. Initially, on reset the machine is in the state called Idle. No grant signals
+are asserted, and the shared resource is not in use. There are three other states, called gnt1,
+gnt2, and gnt3. Each of these states asserts the grant signal for one of the devices.
+The FSM remains in the Idle state as long as all of the request signals are 0. In the
+state diagram the condition r1r2r3 = 000 is indicated by the arc labeled 000. When one or
+more request signals become 1, the machine moves to one of the grant states, according to
+the priority scheme. If r1 is asserted, then device 1 will receive the grant because it has
+the highest priority. This is indicated by the arc labeled 1xx that leads to state gnt1, which
+sets g1 = 1. The meaning of 1xx is that the request signal r1 is 1, and the values of signals r2 and r3 are irrelevant because of the priority scheme. As before, we use the symbol x
+to indicate that the value of the corresponding variable can be either 0 or 1. The machine
+stays in state gnt1 as long as r1 is 1. When r1 = 0, the arc labeled 0xx causes a change on
+the next positive clock edge back to state Idle, and g1 is deasserted. If other requests are
+active at this time, then the FSM will change to a new grant state after the next clock edge.
