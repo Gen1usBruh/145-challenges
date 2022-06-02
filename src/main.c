@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "map.h"
+#include "vector.h"
+#include "node.h"
 
 inline int isEmptyChar(char c){
     return (c == ' ' || c == '\n' || c == '\t');
@@ -11,6 +12,7 @@ int main(int argc, char* argv[]){
     long fSize;
     char* buf;
     size_t res;
+    Init_Vector(vector, )
 
     if(argc != 3){
         fputs("Wrong arguments\nUsage: ./exe text.txt #ofWords", stderr);
@@ -43,7 +45,7 @@ int main(int argc, char* argv[]){
 
     int i, j, cntWords;
     char tempBuf[64];
-    for(i = 0, j = 0; i != fSize; j = 0){
+    for(i = 0, j = 0; i != fSize - 1; j = 0){
         if(!isEmptyChar(buf[i])){
             while(!isEmptyChar(buf[i + 1])){
                 tempBuf[j++] = buf[i++];

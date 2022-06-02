@@ -1,8 +1,9 @@
-#include "map.h"
+#include "vector.h"
 
 typedef struct Node{
     char* word;
-    map_int_t map;
+    vector numOfConn;
+    vector nextState;
 } node;
 
 void incrProb(node* curState, const char* nextState);
