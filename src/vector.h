@@ -10,7 +10,7 @@
     \
     typedef struct { \
         int error; \
-        void* node; \
+        type node; \
     } typename##Result; \  
  \
     typename typename##_new() { \
@@ -40,7 +40,7 @@
  \
     typename##Result typename##_begin(typename* vector) { \
         if(vector->_size != 0){ \
-            typename##Result ok = {.error = 0, .node = vector->_ptr_array}; \
+            typename##Result ok = {.error = 0, .data = vector->_ptr_array}; \
             return ok; \
         } \
         typename##Result not_ok = {.error = 1}; \
@@ -49,7 +49,7 @@
  \
     typename##Result typename##_end(typename* vector) { \
         if(vector->_size != 0){ \
-            typename##Result ok = {.error = 0, .node = (vector->_ptr_array + vector->_size)}; \
+            typename##Result ok = {.error = 0, .data = (vector->_ptr_array + vector->_size)}; \
             return ok; \
         } \
         typename##Result not_ok = {.error = 1}; \
@@ -58,7 +58,7 @@
  \
     typename##Result typename##_at(typename* vector, unsigned int index) { \
         if(vector->_size != 0 && index >= 0 && index < vector->_size){ \
-            typename##Result ok = {.error = 0, .node = vector->_ptr_array + index}; \
+            typename##Result ok = {.error = 0, .data = vector->_ptr_array + index}; \
             return ok; \
         } \
         typename##Result not_ok = {.error = 1}; \
@@ -75,8 +75,8 @@
         vector->_capacity = capacity; \
     } \
  \
-    void typename##_push_back(typename* vector, type node) { \
+    void typename##_push_back(typename* vector, type _data) { \
         if(vector->_size >= vector->_capacity) \
             typename##_reserve(vector, 2 * vector->_capacity); \
-        memcpy((vector->_ptr_array + vector->_size++), &node, sizeof(type)); \
+        memcpy((vector->_ptr_array + vector->_size++), &_data, sizeof(type)); \
     } 
