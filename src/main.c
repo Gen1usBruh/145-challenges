@@ -4,7 +4,7 @@
 #include "node.h"
 
 inline int isEmptyChar(char c){
-    return (c == ' ' || c == '\n' || c == '\t');
+    return (c == ' ' || c == '\n' || c == '\t' || c == '\0');
 }
 
 int main(int argc, char* argv[]){    
