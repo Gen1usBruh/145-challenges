@@ -8,6 +8,7 @@
 
 inline int isEmptyChar(char c){
     return (c == ' ' || c == '\n' || c == '\t' || c == '\0');
+<<<<<<< HEAD
 }
 
 inline void strlower(char* str){
@@ -49,6 +50,8 @@ void* split(char* str, int len){
         ++i;
     }
     return list_of_words;
+=======
+>>>>>>> 9b5bef4113caf5a9cefe262a05c71787a7549f3d
 }
 */
 
