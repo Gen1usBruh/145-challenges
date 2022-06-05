@@ -1,9 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "vector2.h"
 #include "node.h"
+
+void generate_sentence(cvector_vector_type(node*) chain, int sent_len){
+
+    if(sent_len > 0){
+
+        srand(time(NULL));  
+        int rand_index = rand() % cvector_size(chain);
+
+        int i, j, k, num_state, sum_probb;
+        cvector_vector_type(node) state = chain[rand_index];
+        
+        for(i = 0; i != sent_len; ++i){
+
+            printf("%s ", state->word);
+
+            for(k = 0, sum_probb = 0; k != cvector_size(state->prob); ++k){
+                sum_probb += state->prob[k];
+            }
+
+            num_state = cvector_size(state->next_state);
+
+            while(!num_state){
+                rand_index = rand() % cvector_size(chain);
+
+                state = chain[rand_index];
+
+                num_state = cvector_size(state->next_state);
+            }
+
+            // Must be revisited
+            for(j = 0; j != num_state; ++j){
+                if(sum_probb <= state->prob[j]){
+                    state = state->next_state[j];
+                    break;
+                } 
+                else
+                    sum_probb -= state->prob[j];
+            }
+
+            ///////////////////
+            // printf("\n%s -> ", state->word);
+            // for(j = 0; j != cvector_size(state->next_state); ++j){
+            //     printf("%s -> ", state->next_state[j]->word);
+            // }
+            // printf("\n|---> ");
+            // for(j = 0; j != cvector_size(state->prob); ++j){
+            //     printf("%d -> ", state->prob[j]);
+            // }
+            ///////////////////
+        }
+    }
+}
 
 int main(int argc, char* argv[]){    
     FILE* fd;
@@ -142,17 +195,20 @@ int main(int argc, char* argv[]){
         }
     }
     
-    printf("%zd\n", cvector_size(chain));
-    for(i = 0; i != cvector_size(chain); ++i){
-        printf("\n%s -> ", chain[i]->word);
-        for(int j = 0; j != cvector_size(chain[i]->next_state); ++j){
-            printf("%s -> ", chain[i]->next_state[j]->word);
-        }
-        printf("\n|---> ");
-        for(int j = 0; j != cvector_size(chain[i]->prob); ++j){
-            printf("%d -> ", chain[i]->prob[j]);
-        }
-    }
+    // printf("%zd\n", cvector_size(chain));
+    // for(i = 0; i != cvector_size(chain); ++i){
+    //     printf("\n%s -> ", chain[i]->word);
+    //     for(int j = 0; j != cvector_size(chain[i]->next_state); ++j){
+    //         printf("%s -> ", chain[i]->next_state[j]->word);
+    //     }
+    //     printf("\n|---> ");
+    //     for(int j = 0; j != cvector_size(chain[i]->prob); ++j){
+    //         printf("%d -> ", chain[i]->prob[j]);
+    //     }
+    // }
+
+    printf("\n");
+    generate_sentence(chain, atoi(argv[2]));
     
     for(i = 0; i != cvector_size(chain); ++i){
         free(chain[i]);
